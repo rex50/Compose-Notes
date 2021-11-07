@@ -1,6 +1,5 @@
 package com.rex50.notes.ui
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -13,16 +12,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.google.android.material.resources.MaterialResources
+import androidx.navigation.NavHostController
+import com.rex50.notes.base.Actions
 
 @Composable
 fun NoteDetailsScreen(
     noteId: Int?,
-    onBackPressed: (() -> Unit)? = null
+    actions: NoteDetailsActions
 ) {
 
     IconButton(
-        onClick = { onBackPressed?.invoke() },
+        onClick = { actions.onUpPress() },
         modifier = Modifier.padding(8.dp)
     ) {
         Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "back")
@@ -37,6 +37,7 @@ fun NoteDetailsScreen(
     }
 }
 
+class NoteDetailsActions(navHostController: NavHostController): Actions(navHostController)
 
 
 

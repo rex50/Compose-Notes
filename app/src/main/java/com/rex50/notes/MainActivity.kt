@@ -8,6 +8,7 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import com.rex50.notes.navigation.Navigation
 import com.rex50.notes.ui.theme.NotesTheme
 
 class MainActivity : ComponentActivity() {
