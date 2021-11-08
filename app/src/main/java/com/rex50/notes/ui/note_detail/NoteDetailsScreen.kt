@@ -1,4 +1,4 @@
-package com.rex50.notes.ui
+package com.rex50.notes.ui.note_detail
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth

@@ -1,6 +1,8 @@
-package com.rex50.notes.ui
+package com.rex50.notes.ui.notes
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -12,9 +14,28 @@ import com.rex50.notes.base.Actions
 import com.rex50.notes.navigation.Screen
 
 @Composable
-fun NotesListScreen(actions: NotesListActions) {
-    var id: Int by rememberSaveable { mutableStateOf(0) }
-    Column(
+fun NotesListScreen(
+    viewModel: NotesListViewModel,
+    actions: NotesListActions
+) {
+    //var id: Int by rememberSaveable { mutableStateOf(0) }
+    val notes = viewModel.notes.value
+
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight()
+    ) {
+        items(notes.size) { index ->
+            Text(
+                text = notes[index].note,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            )
+        }
+    }
+    /*Column(
         verticalArrangement = Arrangement.Center,
         modifier = Modifier
             .fillMaxWidth()
@@ -28,7 +49,7 @@ fun NotesListScreen(actions: NotesListActions) {
         }) {
             Text(text = "Open details screen")
         }
-    }
+    }*/
 }
 
 class NotesListActions(private val navHostController: NavHostController): Actions(navHostController) {
