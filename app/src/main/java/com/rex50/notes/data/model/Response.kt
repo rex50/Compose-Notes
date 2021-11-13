@@ -1,12 +1,9 @@
 package com.rex50.notes.data.model
 
-data class Response(
-    val msg: String = "",
-    val success: Boolean
-)
+import java.io.Serializable
 
-data class DataResponse<T>(
-    val data: T,
+data class Response<T>(
+    val data: T? = null,
     val msg: String = "",
-    val success: Boolean
-)
+    val success: Boolean = false
+): Serializable

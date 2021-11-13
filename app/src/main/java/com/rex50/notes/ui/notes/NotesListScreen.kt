@@ -2,8 +2,7 @@ package com.rex50.notes.ui.notes
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.Button
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -11,6 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.rex50.notes.base.Actions
+import com.rex50.notes.data.model.Data
+import com.rex50.notes.data.model.Note
 import com.rex50.notes.navigation.Screen
 
 @Composable
@@ -19,22 +20,42 @@ fun NotesListScreen(
     actions: NotesListActions
 ) {
     //var id: Int by rememberSaveable { mutableStateOf(0) }
-    val notes = viewModel.notes.value
+    val notes by rememberSaveable {
+        mutableStateOf(mutableListOf<Note>())
+    }
 
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight()
-    ) {
-        items(notes.size) { index ->
-            Text(
-                text = notes[index].note,
+    when(val result = viewModel.notes.value) {
+        is Data.Loading -> {
+            CircularProgressIndicator()
+        }
+
+        is Data.Ready -> {
+            notes.clear()
+            notes.addAll(result.data)
+            LazyColumn(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp)
-            )
+                    .fillMaxHeight()
+            ) {
+                items(notes.size) { index ->
+                    Text(
+                        text = notes[index].note,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp)
+                    )
+                }
+            }
+        }
+
+        is Data.Error -> {
+            Text(text = result.msg)
         }
     }
+
+    
+
+
     /*Column(
         verticalArrangement = Arrangement.Center,
         modifier = Modifier
@@ -50,6 +71,11 @@ fun NotesListScreen(
             Text(text = "Open details screen")
         }
     }*/
+}
+
+@Composable
+fun Note() {
+
 }
 
 class NotesListActions(private val navHostController: NavHostController): Actions(navHostController) {

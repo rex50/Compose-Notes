@@ -15,10 +15,6 @@ import okhttp3.OkHttpClient
 
 import okhttp3.logging.HttpLoggingInterceptor
 
-
-
-
-
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
@@ -46,7 +42,7 @@ object NetworkModule {
     @Provides
     @Named("auth_token")
     fun provideAuthToken(): String{
-        return "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJodHRwOjAuMC4wLjA6ODA4MC9oZWxsbyIsImlzcyI6Imh0dHA6MC4wLjAuMDo4MDgwLyIsImV4cCI6MTYzNjM2MzA1NSwidXNlcklkIjoxLCJ1c2VybmFtZSI6InJleDUwIn0.pWpSZ1_hndnGfrfZ068riaJB2Rp-XhhA0P8bxvGg1LY"
+        return "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJodHRwOjAuMC4wLjA6ODA4MC9oZWxsbyIsImlzcyI6Imh0dHA6MC4wLjAuMDo4MDgwLyIsImV4cCI6MTYzOTQzMzIwNCwidXNlcklkIjoxLCJ1c2VybmFtZSI6InJleDUwIn0.xcWpSWaVj0WqAK0sa2rXOVFit1cQYZHZQx9d_f5dBSM"
     }
 
 }

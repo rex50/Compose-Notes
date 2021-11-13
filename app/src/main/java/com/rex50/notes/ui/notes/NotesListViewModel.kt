@@ -6,9 +6,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.rex50.notes.data.enums.ErrorType
+import com.rex50.notes.data.model.Data
 import com.rex50.notes.data.model.Note
+import com.rex50.notes.data.model.Result
 import com.rex50.notes.domain.notes.NotesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Named
@@ -22,13 +27,26 @@ constructor(
     private val savedStateHandle: SavedStateHandle,
 ): ViewModel() {
 
-    private val mNotes: MutableState<List<Note>> = mutableStateOf(arrayListOf())
-    val notes: State<List<Note>> = mNotes
+    private val mutableNotes: MutableState<Data<List<Note>>> = mutableStateOf(Data.Loading)
+    val notes: State<Data<List<Note>>> = mutableNotes
+
 
     init {
+        getAllNotes()
+    }
+
+    private fun getAllNotes() {
         viewModelScope.launch {
-            val response = notesRepository.getAllNotes(token)
-            mNotes.value = response
+            mutableNotes.value = Data.Loading
+            when(val result = notesRepository.getAllNotes(token)) {
+                is Result.Success -> {
+                    mutableNotes.value = Data.Ready(result.data)
+                }
+
+                is Result.Failure -> {
+                    mutableNotes.value = Data.Error(result.exception.message ?: "", result.errorType)
+                }
+            }
         }
     }
 
