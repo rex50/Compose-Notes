@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.rex50.notes.data.model.Note
 
@@ -27,11 +28,9 @@ fun NoteCard(
         elevation = 6.dp,
         modifier = modifier
             .fillMaxWidth()
-            .height(90.dp)
             .padding(start = 16.dp, end = 16.dp, top = 6.dp, bottom = 10.dp)
     ) {
         Row(
-            verticalAlignment = Alignment.CenterVertically,
             modifier = modifier
                 .fillMaxWidth()
                 .fillMaxHeight()
@@ -39,27 +38,39 @@ fun NoteCard(
                     onClick?.invoke()
                 }
         ) {
-            val size = 8.dp
-            Canvas(
-                onDraw = {
-                    drawCircle(
-                        color = Color.Red,
-                        radius = size.toPx() / 2f
-                    )
-                },
+            val contentPadding = 24
+            Dot(
+                size = 8.dp,
                 modifier = Modifier
-                    .size(size)
-                    .padding(start = 24.dp)
+                    .padding(horizontal = 0.dp, vertical = (contentPadding+8).dp)
             )
             Spacer(modifier = Modifier.width(8.dp))
             Text(
                 text = note.note,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(24.dp)
+                    .padding(contentPadding.dp)
             )
         }
     }
+}
+
+@Composable
+fun Dot(
+    size: Dp,
+    modifier: Modifier = Modifier
+) {
+    Canvas(
+        onDraw = {
+            drawCircle(
+                color = Color.Red,
+                radius = size.toPx() / 2f
+            )
+        },
+        modifier = modifier
+            .size(size)
+            .padding(start = 24.dp)
+    )
 }
 
 @Preview(showBackground = true)
