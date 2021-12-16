@@ -65,6 +65,7 @@ fun NewNoteDialog(
                         ) {
                             Button(
                                 colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colors.primary),
+                                elevation = ButtonDefaults.elevation(0.dp, 0.dp, 0.dp),
                                 onClick = {
                                     onDismiss()
                                 }

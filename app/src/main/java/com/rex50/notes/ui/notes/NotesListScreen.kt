@@ -1,13 +1,17 @@
 package com.rex50.notes.ui.notes
 
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -17,9 +21,13 @@ import com.rex50.notes.data.model.Note
 import com.rex50.notes.enums.DialogState
 import com.rex50.notes.extensions.toast
 import com.rex50.notes.navigation.Screen
+import com.rex50.notes.ui.components.AnimatedSwipeDismiss
+import com.rex50.notes.ui.components.BoxWithIcon
 import com.rex50.notes.ui.components.NewNoteDialog
 import com.rex50.notes.ui.components.NoteCard
 
+@ExperimentalAnimationApi
+@ExperimentalMaterialApi
 @Composable
 fun NotesListScreen(
     viewModel: NotesListViewModel,
@@ -124,6 +132,8 @@ fun ErrorMessage(message: String) {
     }
 }
 
+@ExperimentalAnimationApi
+@ExperimentalMaterialApi
 @Composable
 fun NotesList(
     notes: List<Note>,
@@ -139,12 +149,29 @@ fun NotesList(
             if(index == 0) {
                 Spacer(modifier = Modifier.height(8.dp))
             }
-            NoteCard(
-                note = notes[index],
-                onClick = {
-                    onNoteClicked?.invoke(notes[index])
-                }
-            )
+            AnimatedSwipeDismiss(
+                item = notes[index],
+                background = {
+                    BoxWithIcon(
+                        icon = Icons.Default.Delete,
+                        contentDescription = "Delete",
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(horizontal = 20.dp, vertical = 10.dp)
+                            .background(Color.Red, RoundedCornerShape(8.dp))
+                    )
+                },
+                content = {
+                    NoteCard(
+                        note = notes[index],
+                        onClick = {
+                            onNoteClicked?.invoke(notes[index])
+                        }
+                    )
+                },
+                onDismiss = {
+                    //TODO: delete note using API
+                })
         }
     }
 }
