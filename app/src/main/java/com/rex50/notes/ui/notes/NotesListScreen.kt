@@ -1,7 +1,5 @@
 package com.rex50.notes.ui.notes
 
-import android.content.Context
-import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
@@ -16,7 +14,10 @@ import androidx.navigation.NavHostController
 import com.rex50.notes.base.Actions
 import com.rex50.notes.data.model.Data
 import com.rex50.notes.data.model.Note
+import com.rex50.notes.enums.DialogState
+import com.rex50.notes.extensions.toast
 import com.rex50.notes.navigation.Screen
+import com.rex50.notes.ui.components.NewNoteDialog
 import com.rex50.notes.ui.components.NoteCard
 
 @Composable
@@ -25,6 +26,27 @@ fun NotesListScreen(
     actions: NotesListActions
 ) {
     val context = LocalContext.current
+    var dialogState by remember {
+        mutableStateOf(DialogState.HIDDEN)
+    }
+
+    dialogState = when(val result = viewModel.addStatus.value) {
+        is Data.Loading -> {
+            DialogState.LOADING
+        }
+
+        is Data.Ready -> {
+            if(result.data)
+                context.toast("Added successfully")
+            DialogState.HIDDEN
+        }
+
+        is Data.Error -> {
+            context.toast(result.msg)
+            DialogState.HIDDEN
+        }
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -33,7 +55,7 @@ fun NotesListScreen(
                 },
                 actions = {
                     IconButton(
-                        onClick = { showToast(context, "Work in progress") },
+                        onClick = { context.toast("Work in progress") },
                     ) {
                         Icon(imageVector = Icons.Default.Info, contentDescription = "About")
                     }
@@ -42,7 +64,7 @@ fun NotesListScreen(
         },
         floatingActionButtonPosition = FabPosition.End,
         floatingActionButton = {
-            FloatingActionButton(onClick = { showToast(context, "Work in progress") }) {
+            FloatingActionButton(onClick = { dialogState = DialogState.DISPLAY }) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = "fab icon")
             }
         }
@@ -65,6 +87,16 @@ fun NotesListScreen(
                 ErrorMessage(message = result.msg)
             }
         }
+
+        NewNoteDialog(
+            dialogState = dialogState,
+            onAdd = {
+                viewModel.addNote(it)
+            },
+            onDismiss = {
+                dialogState = DialogState.HIDDEN
+            }
+        )
     }
 }
 
@@ -117,9 +149,6 @@ fun NotesList(
     }
 }
 
-private fun showToast(context:Context, msg: String) {
-    Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
-}
 class NotesListActions(private val navHostController: NavHostController): Actions(navHostController) {
     fun openNoteDetails(noteId: Int) {
         navHostController.navigate(Screen.NoteDetails.withArgs("$noteId"))

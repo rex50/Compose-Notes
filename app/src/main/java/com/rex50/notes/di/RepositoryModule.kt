@@ -14,7 +14,7 @@ import javax.inject.Singleton
 object RepositoryModule {
     @Singleton
     @Provides
-    fun provideRecipeRepository(
+    fun provideNotesRepository(
         recipeService: NotesService,
     ): NotesRepository{
         return NotesRepositoryImpl(

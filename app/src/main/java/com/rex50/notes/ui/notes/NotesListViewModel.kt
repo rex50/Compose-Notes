@@ -30,6 +30,8 @@ constructor(
     private val mutableNotes: MutableState<Data<List<Note>>> = mutableStateOf(Data.Loading)
     val notes: State<Data<List<Note>>> = mutableNotes
 
+    private val mutableAddStatus: MutableState<Data<Boolean>> = mutableStateOf(Data.Ready(false))
+    val addStatus: State<Data<Boolean>> = mutableAddStatus
 
     init {
         getAllNotes()
@@ -45,6 +47,22 @@ constructor(
 
                 is Result.Failure -> {
                     mutableNotes.value = Data.Error(result.exception.message ?: "", result.errorType)
+                }
+            }
+        }
+    }
+
+    fun addNote(note: String) {
+        viewModelScope.launch {
+            mutableAddStatus.value = Data.Loading
+            when(val result = notesRepository.addNote(token, note)) {
+                is Result.Success -> {
+                    mutableAddStatus.value = Data.Ready(true)
+                    getAllNotes()
+                }
+
+                is Result.Failure -> {
+                    mutableAddStatus.value = Data.Error(result.exception.message ?: "", result.errorType)
                 }
             }
         }
