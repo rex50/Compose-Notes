@@ -3,6 +3,8 @@ package com.rex50.notes.di
 import com.google.gson.GsonBuilder
 import com.rex50.notes.BuildConfig
 import com.rex50.notes.data.network.NotesService
+import com.rex50.notes.interfaces.providers.TokenProvider
+import com.rex50.notes.utils.TokenProviderImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -40,9 +42,8 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    @Named("auth_token")
-    fun provideAuthToken(): String{
-        return "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJodHRwOjAuMC4wLjA6ODA4MC9oZWxsbyIsImlzcyI6Imh0dHA6MC4wLjAuMDo4MDgwLyIsImV4cCI6MTY0MjI1ODI1OSwidXNlcklkIjoxLCJ1c2VybmFtZSI6InJleDUwIn0.L8TzJBl8lZPAtl4F-7jT0r18Wus6DZ0-V6a8f4Syqwk"
+    fun provideTokenProvider(): TokenProvider{
+        return TokenProviderImpl()
     }
 
 }

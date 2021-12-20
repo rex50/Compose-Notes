@@ -6,13 +6,15 @@ import com.rex50.notes.data.model.Note
 import com.rex50.notes.data.model.NoteRequest
 import com.rex50.notes.data.model.Result
 import com.rex50.notes.data.network.NotesService
+import com.rex50.notes.interfaces.providers.TokenProvider
 
 class NotesRepositoryImpl(
-    private val notesService: NotesService
+    private val notesService: NotesService,
+    private val tokenProvider: TokenProvider
 ): NotesRepository {
-    override suspend fun getAllNotes(token: String): Result<List<Note>> {
+    override suspend fun getAllNotes(): Result<List<Note>> {
         return try {
-            val data = notesService.requestAllNotes(token).data
+            val data = notesService.requestAllNotes(tokenProvider.getToken()).data
             data?.let {
                 Result.Success(it.notes)
             } ?: Result.Failure(Exception("Problem while preparing notes"), ErrorType.PROCESSING)
@@ -22,9 +24,9 @@ class NotesRepositoryImpl(
         }
     }
 
-    override suspend fun addNote(token: String, note: String): Result<String> {
+    override suspend fun addNote(note: String): Result<String> {
         return try {
-            val data = notesService.addNote(token, NoteRequest(note)).data
+            val data = notesService.addNote(tokenProvider.getToken(), NoteRequest(note)).data
             data?.let {
                 Result.Success(it)
             } ?: Result.Failure(Exception("Problem adding new note"), ErrorType.PROCESSING)
@@ -33,4 +35,6 @@ class NotesRepositoryImpl(
             Result.Failure(Exception("Problem adding new note"), ErrorType.PROCESSING)
         }
     }
+
+
 }

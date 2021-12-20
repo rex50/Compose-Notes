@@ -23,7 +23,6 @@ class NotesListViewModel
 @Inject
 constructor(
     private val notesRepository: NotesRepository,
-    @Named("auth_token") private val token: String,
     private val savedStateHandle: SavedStateHandle,
 ): ViewModel() {
 
@@ -40,7 +39,7 @@ constructor(
     private fun getAllNotes() {
         viewModelScope.launch {
             mutableNotes.value = Data.Loading
-            when(val result = notesRepository.getAllNotes(token)) {
+            when(val result = notesRepository.getAllNotes()) {
                 is Result.Success -> {
                     mutableNotes.value = Data.Ready(result.data)
                 }
@@ -55,7 +54,7 @@ constructor(
     fun addNote(note: String) {
         viewModelScope.launch {
             mutableAddStatus.value = Data.Loading
-            when(val result = notesRepository.addNote(token, note)) {
+            when(val result = notesRepository.addNote(note)) {
                 is Result.Success -> {
                     mutableAddStatus.value = Data.Ready(true)
                     getAllNotes()

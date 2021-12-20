@@ -1,5 +1,7 @@
 package com.rex50.notes.navigation
 
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
@@ -12,6 +14,8 @@ import com.rex50.notes.ui.notes.NotesListActions
 import com.rex50.notes.ui.notes.NotesListScreen
 import com.rex50.notes.utils.Args
 
+@ExperimentalMaterialApi
+@ExperimentalAnimationApi
 @Composable
 fun Navigation() {
     val navController = rememberNavController()
