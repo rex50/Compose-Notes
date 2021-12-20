@@ -88,7 +88,7 @@ fun NotesListScreen(
                 NotesList(
                     notes = result.data.asReversed(),
                     onNoteClicked = {
-                        actions.openNoteDetails(it.id)
+                        actions.openNoteDetails(it)
                     },
                     onDeleteNote = {
                         viewModel.deleteNote(it)
