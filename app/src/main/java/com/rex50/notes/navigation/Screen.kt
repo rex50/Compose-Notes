@@ -8,9 +8,10 @@ import com.rex50.notes.utils.Args
 sealed class Screen(val route: String, val args: List<NamedNavArgument> = listOf()) {
     object Notes: Screen("noteListScreen")
     object NoteDetails: Screen("noteDetailsScreen", listOf(
-        navArgument(Args.ID) {
-            type = NavType.IntType
-            defaultValue = -1
+        navArgument(Args.NOTE) {
+            type = NavType.StringType
+            nullable = true
+            defaultValue = null
         }
     ))
 

@@ -1,5 +1,6 @@
 package com.rex50.notes.ui.notes
 
+import android.net.Uri
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -15,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.google.gson.Gson
 import com.rex50.notes.base.Actions
 import com.rex50.notes.data.model.Data
 import com.rex50.notes.data.model.Note
@@ -182,8 +184,9 @@ fun NotesList(
 }
 
 class NotesListActions(private val navHostController: NavHostController): Actions(navHostController) {
-    fun openNoteDetails(noteId: Int) {
-        navHostController.navigate(Screen.NoteDetails.withArgs("$noteId"))
+    fun openNoteDetails(note: Note) {
+        val json = Uri.encode(Gson().toJson(note))
+        navHostController.navigate(Screen.NoteDetails.withArgs(json))
     }
 }
 

@@ -7,6 +7,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.google.gson.Gson
+import com.rex50.notes.data.model.Note
 import com.rex50.notes.extensions.getIntArgOrNull
 import com.rex50.notes.ui.note_detail.NoteDetailsActions
 import com.rex50.notes.ui.note_detail.NoteDetailsScreen
@@ -32,8 +34,11 @@ fun Navigation() {
             arguments = Screen.NoteDetails.args
         ) { entry ->
             val noteDetailsActions = NoteDetailsActions(navController)
+            val note = entry.arguments?.getString(Args.NOTE)?.let {
+                Gson().fromJson(it, Note::class.java)
+            }
             NoteDetailsScreen(
-                noteId = entry.getIntArgOrNull(Args.ID),
+                note = note,
                 actions = noteDetailsActions
             )
         }

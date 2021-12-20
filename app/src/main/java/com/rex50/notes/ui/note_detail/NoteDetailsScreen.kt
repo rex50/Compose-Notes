@@ -17,7 +17,7 @@ import com.rex50.notes.base.Actions
 
 @Composable
 fun NoteDetailsScreen(
-    noteId: Int?,
+    note: Note?,
     actions: NoteDetailsActions
 ) {
 
