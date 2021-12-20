@@ -84,7 +84,7 @@ fun NotesListScreen(
 
             is Data.Ready -> {
                 NotesList(
-                    notes = result.data,
+                    notes = result.data.asReversed(),
                     onNoteClicked = {
                         actions.openNoteDetails(it.id)
                     },
