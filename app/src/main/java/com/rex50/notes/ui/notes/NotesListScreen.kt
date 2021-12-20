@@ -87,6 +87,9 @@ fun NotesListScreen(
                     notes = result.data,
                     onNoteClicked = {
                         actions.openNoteDetails(it.id)
+                    },
+                    onDeleteNote = {
+                        viewModel.deleteNote(it)
                     }
                 )
             }
@@ -138,7 +141,8 @@ fun ErrorMessage(message: String) {
 fun NotesList(
     notes: List<Note>,
     modifier: Modifier = Modifier,
-    onNoteClicked: ((Note) -> Unit)? = null
+    onDeleteNote: ((Note) -> Unit)? = null,
+    onNoteClicked: ((Note) -> Unit)? = null,
 ) {
     LazyColumn(
         modifier = modifier
@@ -171,6 +175,7 @@ fun NotesList(
                 },
                 onDismiss = {
                     //TODO: delete note using API
+                    onDeleteNote?.invoke(notes[index])
                 })
         }
     }

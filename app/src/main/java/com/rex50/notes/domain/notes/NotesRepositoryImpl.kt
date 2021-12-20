@@ -36,5 +36,17 @@ class NotesRepositoryImpl(
         }
     }
 
+    override suspend fun deleteNote(note: Note): Result<Int> {
+        return try {
+            val data = notesService.deleteNote(tokenProvider.getToken(), note.id).data
+            data?.let {
+                Result.Success(it)
+            } ?: Result.Failure(Exception("Problem adding new note"), ErrorType.PROCESSING)
+        } catch (e: Exception) {
+            Log.e("NotesRepository", "getAllNotes: ", e)
+            Result.Failure(Exception("Problem adding new note"), ErrorType.PROCESSING)
+        }
+    }
+
 
 }

@@ -4,10 +4,7 @@ import com.rex50.notes.data.model.AllNotesResponse
 import com.rex50.notes.data.model.Note
 import com.rex50.notes.data.model.NoteRequest
 import com.rex50.notes.data.model.Response
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface NotesService {
 
@@ -21,5 +18,11 @@ interface NotesService {
         @Header("Authorization") token: String,
         @Body noteRequest: NoteRequest
     ): Response<String>
+
+    @DELETE("/note/{noteId}")
+    suspend fun deleteNote(
+        @Header("Authorization") token: String,
+        @Path("noteId") noteId: Int
+    ): Response<Int>
 
 }

@@ -1,5 +1,6 @@
 package com.rex50.notes.ui.notes
 
+import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -65,6 +66,24 @@ constructor(
                 }
             }
         }
+    }
+
+    fun deleteNote(note: Note) {
+        viewModelScope.launch {
+            when(val result = notesRepository.deleteNote(note)) {
+                is Result.Success -> {
+                    Log.i(TAG, "deleteNote success: ${result.data}")
+                }
+
+                is Result.Failure -> {
+                    Log.i(TAG, "deleteNote failure: ${note.id}")
+                }
+            }
+        }
+    }
+
+    companion object {
+        private const val TAG = "NotesViewModel"
     }
 
 }
