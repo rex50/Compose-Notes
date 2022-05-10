@@ -10,7 +10,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.gson.Gson
 import com.rex50.notes.data.model.Note
-import com.rex50.notes.extensions.getIntArgOrNull
 import com.rex50.notes.ui.note_detail.NoteDetailsActions
 import com.rex50.notes.ui.note_detail.NoteDetailsScreen
 import com.rex50.notes.ui.notes.NotesListActions
@@ -25,6 +24,7 @@ fun Navigation() {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = Screen.Notes.route) {
         composable(route = Screen.Notes.route) {
+            //TODO: Update list if a note is edited
             val notesListActions = NotesListActions(navController)
             NotesListScreen(
                 viewModel = hiltViewModel(),
@@ -40,6 +40,7 @@ fun Navigation() {
                 Gson().fromJson(it, Note::class.java)
             }
             NoteDetailsScreen(
+                viewModel = hiltViewModel(),
                 note = note,
                 actions = noteDetailsActions
             )

@@ -48,5 +48,21 @@ class NotesRepositoryImpl(
         }
     }
 
+    override suspend fun updateNote(note: Note): Result<NoteRequest> {
+        return try {
+            val data = notesService.updateNote(
+                token = tokenProvider.getToken(),
+                noteId = note.id,
+                noteRequest = NoteRequest(note.note)
+            ).data
+            data?.let {
+                Result.Success(it)
+            } ?: Result.Failure(Exception("Problem adding new note"), ErrorType.PROCESSING)
+        } catch (e: Exception) {
+            Log.e("NotesRepository", "getAllNotes: ", e)
+            Result.Failure(Exception("Problem adding new note"), ErrorType.PROCESSING)
+        }
+    }
+
 
 }

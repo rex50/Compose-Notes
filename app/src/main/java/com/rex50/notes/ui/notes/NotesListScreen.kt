@@ -33,7 +33,7 @@ import com.rex50.notes.ui.components.NoteCard
 @Composable
 fun NotesListScreen(
     viewModel: NotesListViewModel,
-    actions: NotesListActions
+    actions: NotesListActions,
 ) {
     val context = LocalContext.current
     var dialogState by remember {

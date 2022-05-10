@@ -25,4 +25,10 @@ interface NotesService {
         @Path("noteId") noteId: Int
     ): Response<Int>
 
+    @PUT("/note/{noteId}")
+    suspend fun updateNote(
+        @Header("Authorization") token: String,
+        @Path("noteId") noteId: Int,
+        @Body noteRequest: NoteRequest
+    ): Response<NoteRequest>
 }
